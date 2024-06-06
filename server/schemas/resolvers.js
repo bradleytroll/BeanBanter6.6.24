@@ -43,9 +43,14 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    addCoffeeShop: async (parent, args, context) => {
+    signup: async (parent, { username, email, password }) => {
+      const user = await User.create({ username, email, password });
+      const token = signToken(user);
+      return { token, user };
+    },
+    addCoffeeShop: async (parent, { name, location, rating, review }, context) => {
       if (context.user) {
-        const coffeeShop = await CoffeeShop.create({ ...args, user: context.user._id });
+        const coffeeShop = await CoffeeShop.create({ name, location, rating, review, user: context.user._id });
         await User.findByIdAndUpdate(context.user._id, { $push: { coffeeShops: coffeeShop._id } });
         return coffeeShop;
       }
