@@ -5,6 +5,7 @@ import { setContext } from '@apollo/client/link/context';
 
 import 'bulma/css/bulma.min.css';
 import './index.css';
+import './App.css';
 import Logo from './components/Logo';
 
 import Navbar from './components/Nav';
@@ -12,7 +13,6 @@ import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import './App.css';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:3001/graphql',
@@ -37,7 +37,6 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Logo />
-      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
@@ -45,7 +44,6 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Home />} />
       </Routes>
-    
     </ApolloProvider>
   );
 }
