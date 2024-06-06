@@ -20,13 +20,12 @@ const coffeeShopSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Comment',
-    },
-  ],
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment',
+  }],
 });
 
 const CoffeeShop = model('CoffeeShop', coffeeShopSchema);

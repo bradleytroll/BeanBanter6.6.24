@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { SIGNUP_USER } from '../utils/mutations'; // Ensure this path is correct
+import Auth from '../utils/auth';
+
+const SIGNUP_USER = gql`
+  mutation signup($username: String!, $email: String!, $password: String!) {
+    signup(username: $username, email: $email, password: $password) {
+      token
+      user {
+        email
+        username
+        _id
+      }
+    }
+  }
+`;
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -12,7 +25,7 @@ const Signup = () => {
     event.preventDefault();
     try {
       const { data } = await signup({ variables: { username, email, password } });
-      Auth.login(data.signup.token);
+      Auth.login(data.signup.token);  // Correctly set token
     } catch (err) {
       console.error('Signup error:', err);
     }
@@ -25,18 +38,21 @@ const Signup = () => {
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         placeholder="Username"
+        required
       />
       <input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
+        required
       />
       <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
+        required
       />
       <button type="submit" disabled={loading}>
         {loading ? 'Signing up...' : 'Signup'}

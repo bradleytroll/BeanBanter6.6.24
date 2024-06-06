@@ -1,5 +1,5 @@
 const User = require('./User');
 const CoffeeShop = require('./CoffeeShop');
-const Comment = require('./Comment'); // Ensure Comment model is imported
+const Comment = require('./Comment');
 
 module.exports = { User, CoffeeShop, Comment };

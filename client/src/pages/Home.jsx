@@ -1,7 +1,7 @@
-// client/src/pages/Home.jsx
 import React, { useState } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import Auth from '../utils/auth';
+import { ADD_COMMENT, UPDATE_COMMENT, DELETE_COMMENT } from '../utils/mutations';
 
 const GET_COFFEESHOPS = gql`
   query GetCoffeeShops {
@@ -22,40 +22,6 @@ const GET_COFFEESHOPS = gql`
         }
         createdAt
       }
-    }
-  }
-`;
-
-const ADD_COMMENT = gql`
-  mutation addComment($coffeeShopId: ID!, $content: String!) {
-    addComment(coffeeShopId: $coffeeShopId, content: $content) {
-      _id
-      content
-      user {
-        username
-      }
-      createdAt
-    }
-  }
-`;
-
-const UPDATE_COMMENT = gql`
-  mutation updateComment($commentId: ID!, $content: String!) {
-    updateComment(commentId: $commentId, content: $content) {
-      _id
-      content
-      user {
-        username
-      }
-      createdAt
-    }
-  }
-`;
-
-const DELETE_COMMENT = gql`
-  mutation deleteComment($commentId: ID!) {
-    deleteComment(commentId: $commentId) {
-      _id
     }
   }
 `;
@@ -99,7 +65,6 @@ const HomePage = () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      console.log('Deleting comment with ID:', commentId); // Log commentId for debugging
       await deleteComment({
         variables: { commentId },
         refetchQueries: [{ query: GET_COFFEESHOPS }],
@@ -156,7 +121,7 @@ const HomePage = () => {
                   {Auth.loggedIn() && (
                     <div>
                       <textarea
-                        className="textarea is-small is-success "
+                        className="textarea is-small is-success"
                         value={commentContent[shop._id] || ''}
                         onChange={(e) => handleInputChange(e, shop._id)}
                         placeholder="Leave a comment"

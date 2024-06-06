@@ -1,4 +1,3 @@
-// client/src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import Auth from '../utils/auth';
@@ -25,12 +24,7 @@ const Login = () => {
     event.preventDefault();
     try {
       const { data } = await login({ variables: { email, password } });
-      console.log('Login data:', data); // Log the login data for debugging
-      if (data && data.login && data.login.token) {
-        Auth.login(data.login.token);
-      } else {
-        throw new Error("Failed to receive token from login");
-      }
+      Auth.login(data.login.token);  // Correctly set token
     } catch (err) {
       console.error('Login error:', err);
     }
