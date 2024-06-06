@@ -56,6 +56,32 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
+    updateCoffeeShop: async (parent, { id, name, location, rating, review }, context) => {
+      if (context.user) {
+        const coffeeShop = await CoffeeShop.findById(id);
+        if (coffeeShop.user.toString() !== context.user._id) {
+          throw new AuthenticationError('You can only edit your own coffee shops!');
+        }
+        coffeeShop.name = name || coffeeShop.name;
+        coffeeShop.location = location || coffeeShop.location;
+        coffeeShop.rating = rating || coffeeShop.rating;
+        coffeeShop.review = review || coffeeShop.review;
+        await coffeeShop.save();
+        return coffeeShop;
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
+    deleteCoffeeShop: async (parent, { id }, context) => {
+      if (context.user) {
+        const coffeeShop = await CoffeeShop.findById(id);
+        if (coffeeShop.user.toString() !== context.user._id) {
+          throw new AuthenticationError('You can only delete your own coffee shops!');
+        }
+        await coffeeShop.remove();
+        return coffeeShop;
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
     addComment: async (parent, { coffeeShopId, content }, context) => {
       if (context.user) {
         const comment = await Comment.create({
