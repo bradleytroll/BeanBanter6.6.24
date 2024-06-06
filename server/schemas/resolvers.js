@@ -43,6 +43,14 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    addCoffeeShop: async (parent, args, context) => {
+      if (context.user) {
+        const coffeeShop = await CoffeeShop.create({ ...args, user: context.user._id });
+        await User.findByIdAndUpdate(context.user._id, { $push: { coffeeShops: coffeeShop._id } });
+        return coffeeShop;
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
     addComment: async (parent, { coffeeShopId, content }, context) => {
       if (context.user) {
         const comment = await Comment.create({
