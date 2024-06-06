@@ -66,6 +66,17 @@ button:focus-visible {
   overflow: auto; /* Show scrollbars when expanded */
 }
 
+.navbar {
+  padding: 0.5rem 1rem;
+}
+
+.navbar-item {
+  padding: 0.5rem 1rem;
+}
+
+.button {
+  margin: 0 0.5rem;
+}
 
 @media (prefers-color-scheme: light) {
   :root {

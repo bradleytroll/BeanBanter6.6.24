@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import logo from '../assets/logo.JPEG'; // Adjust the path to the location of your JPEG file
+import logo from '../assets/logo.JPEG';
 import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
 
@@ -21,9 +21,9 @@ const LogoContainer = styled.div`
 const Tagline = styled.div`
   font-size: 24px;
   text-align: center;
-  background-color: #D2B48C;
+  background-color: #d2b48c;
   padding: 10px;
-  color: #8B4513;
+  color: #8b4513;
   font-weight: bold;
   border-radius: 8px;
   font-family: 'Courier New', Courier, monospace;
@@ -39,8 +39,8 @@ const LogoImage = styled.img`
 `;
 
 const Button = styled.button`
-  background-color: #D2B48C;
-  color: #8B4513;
+  background-color: #d2b48c;
+  color: #8b4513;
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
@@ -52,12 +52,14 @@ const Button = styled.button`
 `;
 
 const ButtonGroup = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
 `;
 
 const ButtonContainer = styled.div`
+  width: calc(50% - 10px);
   display: flex;
   justify-content: center;
 `;
@@ -71,8 +73,8 @@ const Modal = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
 `;
 
 const ModalContent = styled.div`
@@ -109,7 +111,7 @@ const Logo = () => {
       <Navbar>
         <LogoContainer>
           <LogoImage src={logo} alt="Logo" />
-          <Tagline className="m-4">
+          <Tagline>
             The place to spill the tea...{"\n"}on coffee!
           </Tagline>
         </LogoContainer>

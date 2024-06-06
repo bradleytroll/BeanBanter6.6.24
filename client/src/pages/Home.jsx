@@ -1,3 +1,4 @@
+// client/src/pages/Home.jsx
 import React, { useState } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import Auth from '../utils/auth';
@@ -131,7 +132,7 @@ const HomePage = () => {
                     <div key={comment._id} className="box">
                       <p>{comment.content}</p>
                       <p><small>by {comment.user.username}</small></p>
-                      {Auth.getProfile().data.username === comment.user.username && (
+                      {Auth.loggedIn() && Auth.getProfile().data.username === comment.user.username && (
                         <div className="buttons">
                           <button
                             className="button is-success is-small is-rounded is-outlined"
