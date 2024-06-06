@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { ADD_COFFEE_SHOP } from '../utils/mutations';
+import { ADD_COFFEE_SHOP, UPDATE_COFFEE_SHOP, DELETE_COFFEE_SHOP } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
+import Auth from '../utils/auth';
 
 const Dashboard = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
   const [addCoffeeShop] = useMutation(ADD_COFFEE_SHOP, {
+    refetchQueries: [{ query: QUERY_ME }],
+  });
+  const [updateCoffeeShop] = useMutation(UPDATE_COFFEE_SHOP, {
+    refetchQueries: [{ query: QUERY_ME }],
+  });
+  const [deleteCoffeeShop] = useMutation(DELETE_COFFEE_SHOP, {
     refetchQueries: [{ query: QUERY_ME }],
   });
 
@@ -13,20 +20,47 @@ const Dashboard = () => {
   const [location, setLocation] = useState('');
   const [rating, setRating] = useState('');
   const [review, setReview] = useState('');
+  const [editingId, setEditingId] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await addCoffeeShop({
-        variables: { name, location, rating: parseInt(rating), review },
-      });
+      if (editingId) {
+        await updateCoffeeShop({
+          variables: { id: editingId, name, location, rating: parseInt(rating), review },
+        });
+      } else {
+        await addCoffeeShop({
+          variables: { name, location, rating: parseInt(rating), review },
+        });
+      }
       setName('');
       setLocation('');
       setRating('');
       setReview('');
-      refetch(); // Refetch the data to update the coffee shops list
+      setEditingId(null);
+      refetch();
     } catch (err) {
-      console.error('Error adding coffee shop:', err);
+      console.error('Error adding or updating coffee shop:', err);
+    }
+  };
+
+  const handleEdit = (shop) => {
+    setName(shop.name);
+    setLocation(shop.location);
+    setRating(shop.rating);
+    setReview(shop.review);
+    setEditingId(shop._id);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteCoffeeShop({
+        variables: { id },
+      });
+      refetch();
+    } catch (err) {
+      console.error('Error deleting coffee shop:', err);
     }
   };
 
@@ -88,7 +122,9 @@ const Dashboard = () => {
         </div>
         <div className="field">
           <div className="control">
-            <button className="button is-link" type="submit">Add Coffee Shop</button>
+            <button className="button is-link" type="submit">
+              {editingId ? 'Update Coffee Shop' : 'Add Coffee Shop'}
+            </button>
           </div>
         </div>
       </form>
@@ -102,6 +138,12 @@ const Dashboard = () => {
                 <p className="subtitle is-6">Location: {shop.location}</p>
                 <p><strong>Rating:</strong> {shop.rating}</p>
                 <p><strong>Review:</strong> {shop.review}</p>
+                {shop.user && Auth.loggedIn() && Auth.getProfile().data._id === shop.user._id && (
+                  <>
+                    <button className="button is-info is-small" onClick={() => handleEdit(shop)}>Edit</button>
+                    <button className="button is-danger is-small" onClick={() => handleDelete(shop._id)}>Delete</button>
+                  </>
+                )}
               </div>
             </div>
           </div>

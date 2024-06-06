@@ -42,6 +42,8 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
     signup(username: String!, email: String!, password: String!): Auth
     addCoffeeShop(name: String!, location: String!, rating: Int!, review: String!): CoffeeShop
+    updateCoffeeShop(id: ID!, name: String, location: String, rating: Int, review: String): CoffeeShop
+    deleteCoffeeShop(id: ID!): CoffeeShop
     addComment(coffeeShopId: ID!, content: String!): Comment
     updateComment(commentId: ID!, content: String!): Comment
     deleteComment(commentId: ID!): Comment

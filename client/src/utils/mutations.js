@@ -34,6 +34,9 @@ export const ADD_COFFEE_SHOP = gql`
       location
       rating
       review
+      user {
+        username
+      }
     }
   }
 `;
@@ -54,7 +57,6 @@ export const DELETE_COFFEE_SHOP = gql`
   mutation deleteCoffeeShop($id: ID!) {
     deleteCoffeeShop(id: $id) {
       _id
-      name
     }
   }
 `;
