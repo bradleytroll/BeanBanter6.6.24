@@ -59,24 +59,27 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
-      <h1>Your Coffee Shops</h1>
+    <div className>
+      <h1 className="mb-5">BeanBanter Dashboard</h1>
       <CoffeeShopForm
         onSubmit={editingShop ? handleUpdateCoffeeShop : handleAddCoffeeShop}
         initialData={editingShop}
       />
-      <ul>
+      <div >
+        <h1 className="mb-5">Your Coffee Shops</h1>
+      <ul className="columns is-multiline">
         {data.me.coffeeShops.map((shop) => (
-          <li key={shop._id}>
-            <h2>{shop.name}</h2>
-            <p>{shop.location}</p>
+          <li className="column is-one-third card" key={shop._id}>
+            <h2 className="title is-4">{shop.name}</h2>
+            <p className="subtitle is-6">{shop.location}</p>
             <p>Rating: {shop.rating}</p>
             <p>{shop.review}</p>
-            <button onClick={() => setEditingShop(shop)}>Edit</button>
-            <button onClick={() => handleDeleteCoffeeShop(shop._id)}>Delete</button>
+            <button className="button is-success is-small is-rounded is-outlined" onClick={() => setEditingShop(shop)}>Edit</button>
+            <button className="button is-warning is-small is-rounded is-outlined" onClick={() => handleDeleteCoffeeShop(shop._id)}>Delete</button>
           </li>
         ))}
       </ul>
+      </div>
     </div>
   );
 };
