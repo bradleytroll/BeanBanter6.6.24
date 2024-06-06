@@ -1,86 +1,29 @@
-// const { User, CoffeeShop } = require('../models');
-// const { signToken } = require('../utils/auth');
-// const { AuthenticationError } = require('apollo-server-express'); // Ensure correct import for AuthenticationError
-// const resolvers = {
-//   Query: {
-//     me: async (parent, args, context) => {
-//       if (context.user) {
-//         return User.findById(context.user._id).populate('coffeeShops');
-//       }
-//       throw new AuthenticationError('Not logged in');
-//     },
-//     coffeeShops: async () => {
-//       return CoffeeShop.find().populate('user');
-//     },
-//     coffeeShop: async (parent, { id }) => {
-//       return CoffeeShop.findById(id).populate('user');
-//     },
-//   },
-//   Mutation: {
-//     signup: async (parent, args) => {
-//       const user = await User.create(args);
-//       const token = signToken(user);
-//       return { token, user };
-//     },
-//     addUser: async (parent, args) => {
-//       try {
-//         const user = await User.create(args);
-//         const token = signToken(user);
-//         return { token, user };
-//       } catch (error) {
-//         console.error(error);
-//         throw new Error('Failed to add user');
-//       }
-//     },
-//     login: async (parent, { email, password }) => {
-//       const user = await User.findOne({ email });
-//       if (!user) {
-//         throw new AuthenticationError('Incorrect credentials');
-//       }
-//       const correctPw = await user.isCorrectPassword(password);
-//       if (!correctPw) {
-//         throw new AuthenticationError('Incorrect credentials');
-//       }
-//       const token = signToken(user);
-//       return { token, user };
-//     },
-//     addCoffeeShop: async (parent, args, context) => {
-//       if (context.user) {
-//         const coffeeShop = await CoffeeShop.create({ ...args, user: context.user._id });
-//         await User.findByIdAndUpdate(context.user._id, { $push: { coffeeShops: coffeeShop._id } });
-//         return coffeeShop;
-//       }
-//       throw new AuthenticationError('Not logged in');
-//     },
-//     updateCoffeeShop: async (parent, { id, ...args }, context) => {
-//       if (context.user) {
-//         return CoffeeShop.findByIdAndUpdate(id, args, { new: true });
-//       }
-//       throw new AuthenticationError('Not logged in');
-//     },
-//     deleteCoffeeShop: async (parent, { id }, context) => {
-//       if (context.user) {
-//         return CoffeeShop.findByIdAndDelete(id);
-//       }
-//       throw new AuthenticationError('Not logged in');
-//     },
-//   },
-// };
-// module.exports = resolvers;
-const { User, CoffeeShop } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
+const { User, CoffeeShop, Comment } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    coffeeShops: async () => {
-      return CoffeeShop.find().populate('user', 'username').exec();
-    },
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findById(context.user._id).populate('coffeeShops');
+        return User.findById(context.user._id).populate({
+          path: 'coffeeShops',
+          populate: {
+            path: 'comments',
+            populate: 'user'
+          }
+        });
       }
       throw new AuthenticationError('You need to be logged in!');
+    },
+    coffeeShops: async () => {
+      return CoffeeShop.find().populate('user').populate({
+        path: 'comments',
+        populate: 'user'
+      });
+    },
+    comments: async (parent, { coffeeShopId }) => {
+      return Comment.find({ coffeeShop: coffeeShopId }).populate('user');
     },
   },
   Mutation: {
@@ -100,38 +43,48 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    signup: async (parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
-      const token = signToken(user);
-      return { token, user };
-    },
-    addCoffeeShop: async (parent, args, context) => {
+    addComment: async (parent, { coffeeShopId, content }, context) => {
       if (context.user) {
-        const coffeeShop = await CoffeeShop.create({ ...args, user: context.user._id });
-        await User.findByIdAndUpdate(context.user._id, { $push: { coffeeShops: coffeeShop._id } });
-        return coffeeShop;
+        const comment = await Comment.create({
+          content,
+          user: context.user._id,
+          coffeeShop: coffeeShopId,
+        });
+
+        await CoffeeShop.findByIdAndUpdate(coffeeShopId, {
+          $push: { comments: comment._id },
+        });
+
+        return comment;
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    updateCoffeeShop: async (parent, { id, ...args }, context) => {
+    updateComment: async (parent, { commentId, content }, context) => {
       if (context.user) {
-        return CoffeeShop.findByIdAndUpdate(id, args, { new: true });
+        const comment = await Comment.findById(commentId);
+        if (comment.user.toString() !== context.user._id) {
+          throw new AuthenticationError('You can only edit your own comments!');
+        }
+        comment.content = content;
+        await comment.save();
+        return comment;
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    deleteCoffeeShop: async (parent, { id }, context) => {
+    deleteComment: async (parent, { commentId }, context) => {
       if (context.user) {
-        return CoffeeShop.findByIdAndDelete(id);
+        const comment = await Comment.findById(commentId);
+
+        if (comment.user.toString() !== context.user._id) {
+          throw new AuthenticationError('You are not authorized to delete this comment');
+        }
+
+        await Comment.findByIdAndDelete(commentId);
+        return comment;
       }
-      throw new AuthenticationError('You need to be logged in!');
+      throw new AuthenticationError('Not logged in');
     },
-    deleteUser: async (parent, { id }, context) => {
-      if (context.user) {
-        return User.findByIdAndDelete(id);
-      }
-      throw new AuthenticationError('You need to be logged in!');
-    },
-  },
+  }
 };
 
 module.exports = resolvers;

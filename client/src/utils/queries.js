@@ -12,6 +12,13 @@ export const QUERY_ME = gql`
         location
         rating
         review
+        comments {
+          _id
+          content
+          user {
+            username
+          }
+        }
       }
     }
   }
@@ -27,6 +34,13 @@ export const QUERY_COFFEE_SHOPS = gql`
       review
       user {
         username
+      }
+      comments {
+        _id
+        content
+        user {
+          username
+        }
       }
     }
   }

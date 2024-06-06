@@ -55,6 +55,18 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.textarea.is-small {
+  max-height: 100px; /* Limit initial height */
+  overflow: hidden; /* Hide scrollbars */
+  transition: max-height 0.2s ease-out; /* Smooth transition */
+}
+
+.textarea.is-small:focus {
+  max-height: 300px; /* Expand on focus */
+  overflow: auto; /* Show scrollbars when expanded */
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

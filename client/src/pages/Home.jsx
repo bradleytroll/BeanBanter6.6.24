@@ -1,5 +1,6 @@
-import React from 'react';
-import { useQuery, gql } from '@apollo/client';
+import React, { useState } from 'react';
+import { useQuery, useMutation, gql } from '@apollo/client';
+import Auth from '../utils/auth';
 
 const GET_COFFEESHOPS = gql`
   query GetCoffeeShops {
@@ -12,18 +13,107 @@ const GET_COFFEESHOPS = gql`
       user {
         username
       }
+      comments {
+        _id
+        content
+        user {
+          username
+        }
+        createdAt
+      }
+    }
+  }
+`;
+
+const ADD_COMMENT = gql`
+  mutation addComment($coffeeShopId: ID!, $content: String!) {
+    addComment(coffeeShopId: $coffeeShopId, content: $content) {
+      _id
+      content
+      user {
+        username
+      }
+      createdAt
+    }
+  }
+`;
+
+const UPDATE_COMMENT = gql`
+  mutation updateComment($commentId: ID!, $content: String!) {
+    updateComment(commentId: $commentId, content: $content) {
+      _id
+      content
+      user {
+        username
+      }
+      createdAt
+    }
+  }
+`;
+
+const DELETE_COMMENT = gql`
+  mutation deleteComment($commentId: ID!) {
+    deleteComment(commentId: $commentId) {
+      _id
     }
   }
 `;
 
 const HomePage = () => {
   const { loading, error, data } = useQuery(GET_COFFEESHOPS);
+  const [addComment] = useMutation(ADD_COMMENT);
+  const [updateComment] = useMutation(UPDATE_COMMENT);
+  const [deleteComment] = useMutation(DELETE_COMMENT);
+
+  const [commentContent, setCommentContent] = useState({});
+  const [editingCommentId, setEditingCommentId] = useState(null);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+  const handleAddComment = async (coffeeShopId) => {
+    try {
+      await addComment({
+        variables: { coffeeShopId, content: commentContent[coffeeShopId] },
+        refetchQueries: [{ query: GET_COFFEESHOPS }],
+      });
+      setCommentContent({ ...commentContent, [coffeeShopId]: '' });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleUpdateComment = async (commentId, coffeeShopId) => {
+    try {
+      await updateComment({
+        variables: { commentId, content: commentContent[coffeeShopId] },
+        refetchQueries: [{ query: GET_COFFEESHOPS }],
+      });
+      setCommentContent({ ...commentContent, [coffeeShopId]: '' });
+      setEditingCommentId(null);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      console.log('Deleting comment with ID:', commentId); // Log commentId for debugging
+      await deleteComment({
+        variables: { commentId },
+        refetchQueries: [{ query: GET_COFFEESHOPS }],
+      });
+    } catch (e) {
+      console.error('Delete error:', e);
+    }
+  };
+
+  const handleInputChange = (e, coffeeShopId) => {
+    setCommentContent({ ...commentContent, [coffeeShopId]: e.target.value });
+  };
+
   return (
-    <div className="container">
+    <div>
       <h1 className="title has-text-centered">Recent Reviews</h1>
       <div className="columns is-multiline">
         {data.coffeeShops.map((shop) => (
@@ -31,11 +121,59 @@ const HomePage = () => {
             <div className="card">
               <div className="card-content">
                 <p className="title is-4">{shop.name}</p>
-                <p className="subtitle is-6">Reviewed by: {shop.user.username}</p>
+                <p className="subtitle is-6">Location: {shop.location}</p>
                 <div className="content">
-                  <p><strong>Location:</strong> {shop.location}</p>
                   <p><strong>Rating:</strong> {shop.rating}</p>
                   <p><strong>Review:</strong> {shop.review}</p>
+                </div>
+                <div>
+                  {shop.comments.map((comment) => (
+                    <div key={comment._id} className="box">
+                      <p>{comment.content}</p>
+                      <p><small>by {comment.user.username}</small></p>
+                      {Auth.getProfile().data.username === comment.user.username && (
+                        <div className="buttons">
+                          <button
+                            className="button is-info"
+                            onClick={() => {
+                              setCommentContent({ ...commentContent, [shop._id]: comment.content });
+                              setEditingCommentId(comment._id);
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="button is-danger"
+                            onClick={() => handleDeleteComment(comment._id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {Auth.loggedIn() && (
+                    <div>
+                      <textarea
+                        className="textarea is-small"
+                        value={commentContent[shop._id] || ''}
+                        onChange={(e) => handleInputChange(e, shop._id)}
+                        placeholder="Leave a comment"
+                      ></textarea>
+                      <button
+                        className="button is-link"
+                        onClick={() => {
+                          if (editingCommentId) {
+                            handleUpdateComment(editingCommentId, shop._id);
+                          } else {
+                            handleAddComment(shop._id);
+                          }
+                        }}
+                      >
+                        {editingCommentId ? 'Update Comment' : 'Add Comment'}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -47,133 +185,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-
-
-// import React from 'react';
-// import { useQuery } from '@apollo/client';
-// import { QUERY_COFFEE_SHOPS } from '../utils/queries';
-// import styled from 'styled-components';
-
-
-// const Container = styled.div`
-//   padding: 2rem;
-// `;
-
-// const CoffeeShopList = styled.ul`
-//   list-style: none;
-//   padding: 0;
-// `;
-
-// const CoffeeShopItem = styled.li`
-//   background-color: #f4f4f4;
-//   margin: 1rem 0;
-//   padding: 1rem;
-//   border-radius: 8px;
-// `;
-
-// const Home = () => {
-//   const { loading, error, data } = useQuery(QUERY_COFFEE_SHOPS);
-
-//     // Logging to debug the response
-//     console.log('Loading:', loading);
-//     console.log('Error:', error);
-//     console.log('Data:', data);
-
-
-//   if (loading) {
-//     return <div>loading...</div>;
-//   }
-//   if (error) {
-//     return <div>error loading coffee shops</div>;
-//   }
-
-//   console.log(data.coffeeShops, "finding coffee shops");
-//   console.log({data});
-//   const coffeeShops = data?.coffeeShops || [];
-
-//   return (
-//     <Container>
-//       <h1>Recently Reviewed Coffee Shops</h1>
-//       {loading ? (
-//         <div>Loading...</div>
-//       ) : (
-//         <CoffeeShopList>
-//           {coffeeShops.map(shop => (
-//             <CoffeeShopItem key={shop._id}>
-//               <h2>{shop.name}</h2>
-//               <p>{shop.location}</p>
-//               <p>Rating: {shop.rating}</p>
-//               <p>{shop.review}</p>
-//             </CoffeeShopItem>
-//           ))}
-//         </CoffeeShopList>
-//       )}
-//     </Container>
-//   );
-// };
-
-// export default Home;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-// import { useQuery } from '@apollo/client';
-// import { QUERY_COFFEE_SHOPS } from '../utils/queries';
-// import styled from 'styled-components';
-
-// const Container = styled.div`
-//   padding: 2rem;
-// `;
-
-// const CoffeeShopList = styled.ul`
-//   list-style: none;
-//   padding: 0;
-// `;
-
-// const CoffeeShopItem = styled.li`
-//   background-color: #f4f4f4;
-//   margin: 1rem 0;
-//   padding: 1rem;
-//   border-radius: 8px;
-// `;
-
-// const Home = () => {
-//   const { loading, data } = useQuery(QUERY_COFFEE_SHOPS);
-//   const coffeeShops = data?.coffeeShops || [];
-
-//   console.log("finding coffee shops");
-
-//   return (
-//     <Container>
-//       <h1>Recently Reviewed Coffee Shops</h1>
-//       {loading ? (
-//         <div>Loading...</div>
-//       ) : (
-//         <CoffeeShopList>
-//           {coffeeShops.map(shop => (
-//             <CoffeeShopItem key={shop._id}>
-//               <h2>{shop.name}</h2>
-//               <p>{shop.location}</p>
-//               <p>Rating: {shop.rating}</p>
-//               <p>{shop.review}</p>
-//             </CoffeeShopItem>
-//           ))}
-//         </CoffeeShopList>
-//       )}
-//     </Container>
-//   );
-// };
-
-// export default Home;

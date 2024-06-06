@@ -21,50 +21,51 @@ const LogoContainer = styled.div`
 const Tagline = styled.div`
   font-size: 24px;
   text-align: center;
-  background-color: #D2B48C; // Light brown background
-  padding: 10px; // Added padding for better appearance
-  color: #8B4513; // Dark brown font color
-  font-weight: bold; // Bolder font
-  border-radius: 8px; // Rounded edges
-  font-family: 'Courier New', Courier, monospace; // Stencil-like font
-  white-space: pre; // Preserve white space for line breaks
-  margin: 0 20px; // Centering space
+  background-color: #D2B48C;
+  padding: 10px;
+  color: #8B4513;
+  font-weight: bold;
+  border-radius: 8px;
+  font-family: 'Courier New', Courier, monospace;
+  white-space: pre;
+  margin: 0 20px;
 `;
 
 const LogoImage = styled.img`
-  width: 350px; // Adjust the width
+  width: 350px;
   height: auto;
   padding: 0;
-  border-radius: 8px; // Rounded edges for the logo
+  border-radius: 8px;
 `;
 
 const Button = styled.button`
-  background-color: #D2B48C; // Light brown background
-  color: #8B4513; // Dark brown font color
-  padding: 8px 16px; // Smaller padding for smaller buttons
+  background-color: #D2B48C;
+  color: #8B4513;
+  padding: 10px 20px;
   border: none;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
   margin: 5px;
-  width: 100%; // Ensure all buttons have the same width
+  width: 100%;
   box-sizing: border-box;
 `;
 
-const ButtonGroupContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const ButtonGroup = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
 `;
 
+const ButtonContainer = styled.div`
+  width: calc(50% - 10px);
+  display: flex;
+  justify-content: center;
+`;
+
 const Modal = styled.div`
-  display: ${({ show }) => (show ? 'block' : 'none')};
+  display: ${({ $show }) => ($show ? 'block' : 'none')};
   position: fixed;
   z-index: 1;
   left: 0;
@@ -72,8 +73,8 @@ const Modal = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 `;
 
 const ModalContent = styled.div`
@@ -114,25 +115,35 @@ const Logo = () => {
             The place to spill the tea...{"\n"}on coffee!
           </Tagline>
         </LogoContainer>
-        <ButtonGroupContainer>
-          <ButtonGroup>
+        <ButtonGroup>
+          <ButtonContainer>
             <Button as={Link} to="/">Home</Button>
-            {Auth.loggedIn() ? (
-              <>
+          </ButtonContainer>
+          {Auth.loggedIn() ? (
+            <>
+              <ButtonContainer>
                 <Button as={Link} to="/dashboard">Dashboard</Button>
+              </ButtonContainer>
+              <ButtonContainer>
                 <Button as="a" href="/" onClick={() => Auth.logout()}>Logout</Button>
-              </>
-            ) : (
-              <>
+              </ButtonContainer>
+            </>
+          ) : (
+            <>
+              <ButtonContainer>
                 <Button as={Link} to="/signup">Signup</Button>
+              </ButtonContainer>
+              <ButtonContainer>
                 <Button as={Link} to="/login">Login</Button>
-              </>
-            )}
+              </ButtonContainer>
+            </>
+          )}
+          <ButtonContainer>
             <Button onClick={toggleModal}>About</Button>
-          </ButtonGroup>
-        </ButtonGroupContainer>
+          </ButtonContainer>
+        </ButtonGroup>
       </Navbar>
-      <Modal show={showModal}>
+      <Modal $show={showModal}>
         <ModalContent>
           <CloseButton onClick={toggleModal}>&times;</CloseButton>
           <h2>About BeanBanter</h2>

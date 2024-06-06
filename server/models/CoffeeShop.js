@@ -1,4 +1,3 @@
-
 const { Schema, model } = require('mongoose');
 
 const coffeeShopSchema = new Schema({
@@ -12,17 +11,22 @@ const coffeeShopSchema = new Schema({
   },
   rating: {
     type: Number,
-    min: 0,
-    max: 5,
+    required: true,
   },
   review: {
     type: String,
+    required: true,
   },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
   },
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
 });
 
 const CoffeeShop = model('CoffeeShop', coffeeShopSchema);

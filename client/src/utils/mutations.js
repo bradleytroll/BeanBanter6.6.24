@@ -20,6 +20,7 @@ export const SIGNUP_USER = gql`
       user {
         email
         username
+        _id
       }
     }
   }
@@ -58,11 +59,36 @@ export const DELETE_COFFEE_SHOP = gql`
   }
 `;
 
-export const DELETE_USER = gql`
-  mutation deleteUser($id: ID!) {
-    deleteUser(id: $id) {
+export const ADD_COMMENT = gql`
+  mutation addComment($coffeeShopId: ID!, $content: String!) {
+    addComment(coffeeShopId: $coffeeShopId, content: $content) {
       _id
-      username
+      content
+      user {
+        username
+      }
+      createdAt
+    }
+  }
+`;
+
+export const UPDATE_COMMENT = gql`
+  mutation updateComment($commentId: ID!, $content: String!) {
+    updateComment(commentId: $commentId, content: $content) {
+      _id
+      content
+      user {
+        username
+      }
+      createdAt
+    }
+  }
+`;
+
+export const DELETE_COMMENT = gql`
+  mutation deleteComment($commentId: ID!) {
+    deleteComment(commentId: $commentId) {
+      _id
     }
   }
 `;
