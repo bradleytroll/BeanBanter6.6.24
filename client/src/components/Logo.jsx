@@ -52,14 +52,12 @@ const Button = styled.button`
 `;
 
 const ButtonGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 `;
 
 const ButtonContainer = styled.div`
-  width: calc(50% - 10px);
   display: flex;
   justify-content: center;
 `;
@@ -111,7 +109,7 @@ const Logo = () => {
       <Navbar>
         <LogoContainer>
           <LogoImage src={logo} alt="Logo" />
-          <Tagline>
+          <Tagline className="m-4">
             The place to spill the tea...{"\n"}on coffee!
           </Tagline>
         </LogoContainer>

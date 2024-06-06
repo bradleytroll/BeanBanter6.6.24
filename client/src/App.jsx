@@ -8,7 +8,7 @@ import './index.css';
 import './App.css';
 import Logo from './components/Logo';
 
-import Navbar from './components/Nav';
+
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
