@@ -134,7 +134,7 @@ const HomePage = () => {
                       {Auth.getProfile().data.username === comment.user.username && (
                         <div className="buttons">
                           <button
-                            className="button is-info"
+                            className="button is-success is-small is-rounded is-outlined"
                             onClick={() => {
                               setCommentContent({ ...commentContent, [shop._id]: comment.content });
                               setEditingCommentId(comment._id);
@@ -143,7 +143,7 @@ const HomePage = () => {
                             Edit
                           </button>
                           <button
-                            className="button is-danger"
+                            className="button is-warning is-small is-rounded is-outlined"
                             onClick={() => handleDeleteComment(comment._id)}
                           >
                             Delete
@@ -155,13 +155,13 @@ const HomePage = () => {
                   {Auth.loggedIn() && (
                     <div>
                       <textarea
-                        className="textarea is-small"
+                        className="textarea is-small is-success "
                         value={commentContent[shop._id] || ''}
                         onChange={(e) => handleInputChange(e, shop._id)}
                         placeholder="Leave a comment"
                       ></textarea>
                       <button
-                        className="button is-link"
+                        className="button is-link is-small is-rounded is-info is-outlined"
                         onClick={() => {
                           if (editingCommentId) {
                             handleUpdateComment(editingCommentId, shop._id);
