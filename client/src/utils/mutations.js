@@ -57,9 +57,11 @@ export const DELETE_COFFEE_SHOP = gql`
   mutation deleteCoffeeShop($id: ID!) {
     deleteCoffeeShop(id: $id) {
       _id
+      name
     }
   }
 `;
+
 
 export const ADD_COMMENT = gql`
   mutation addComment($coffeeShopId: ID!, $content: String!) {

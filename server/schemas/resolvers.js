@@ -73,14 +73,20 @@ const resolvers = {
     },
     deleteCoffeeShop: async (parent, { id }, context) => {
       if (context.user) {
-        const coffeeShop = await CoffeeShop.findById(id);
-        if (coffeeShop.user.toString() !== context.user._id) {
-          throw new AuthenticationError('You can only delete your own coffee shops!');
+        const shop = await CoffeeShop.findById(id);
+        if (!shop) {
+          throw new AuthenticationError('Coffee shop not found');
         }
-        await coffeeShop.remove();
-        return coffeeShop;
+
+        if (shop.user.toString() !== context.user._id) {
+          throw new AuthenticationError('You are not authorized to delete this coffee shop');
+        }
+
+        await CoffeeShop.findByIdAndDelete(id);
+
+        return shop;
       }
-      throw new AuthenticationError('You need to be logged in!');
+      throw new AuthenticationError('You need to be logged in');
     },
     addComment: async (parent, { coffeeShopId, content }, context) => {
       if (context.user) {
