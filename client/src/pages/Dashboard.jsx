@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { ADD_COFFEE_SHOP, UPDATE_COFFEE_SHOP, DELETE_COFFEE_SHOP } from '../utils/mutations';
+import { ADD_COFFEE_SHOP, DELETE_COFFEE_SHOP, UPDATE_COFFEE_SHOP } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
-import Auth from '../utils/auth';
 
 const Dashboard = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
   const [addCoffeeShop] = useMutation(ADD_COFFEE_SHOP, {
     refetchQueries: [{ query: QUERY_ME }],
   });
-  const [updateCoffeeShop] = useMutation(UPDATE_COFFEE_SHOP, {
+  const [deleteCoffeeShop] = useMutation(DELETE_COFFEE_SHOP, {
     refetchQueries: [{ query: QUERY_ME }],
   });
-  const [deleteCoffeeShop] = useMutation(DELETE_COFFEE_SHOP, {
+  const [updateCoffeeShop] = useMutation(UPDATE_COFFEE_SHOP, {
     refetchQueries: [{ query: QUERY_ME }],
   });
 
@@ -20,15 +19,16 @@ const Dashboard = () => {
   const [location, setLocation] = useState('');
   const [rating, setRating] = useState('');
   const [review, setReview] = useState('');
-  const [editingId, setEditingId] = useState(null);
+  const [editingShopId, setEditingShopId] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      if (editingId) {
+      if (editingShopId) {
         await updateCoffeeShop({
-          variables: { id: editingId, name, location, rating: parseInt(rating), review },
+          variables: { id: editingShopId, name, location, rating: parseInt(rating), review },
         });
+        setEditingShopId(null);
       } else {
         await addCoffeeShop({
           variables: { name, location, rating: parseInt(rating), review },
@@ -38,23 +38,15 @@ const Dashboard = () => {
       setLocation('');
       setRating('');
       setReview('');
-      setEditingId(null);
-      refetch();
+      refetch(); // Refetch the data to update the coffee shops list
     } catch (err) {
-      console.error('Error adding or updating coffee shop:', err);
+      console.error('Error adding/updating coffee shop:', err);
     }
-  };
-
-  const handleEdit = (shop) => {
-    setName(shop.name);
-    setLocation(shop.location);
-    setRating(shop.rating);
-    setReview(shop.review);
-    setEditingId(shop._id);
   };
 
   const handleDelete = async (id) => {
     try {
+      console.log(`Deleting coffee shop with ID: ${id}`);
       await deleteCoffeeShop({
         variables: { id },
       });
@@ -64,12 +56,20 @@ const Dashboard = () => {
     }
   };
 
+  const handleEdit = (shop) => {
+    setEditingShopId(shop._id);
+    setName(shop.name);
+    setLocation(shop.location);
+    setRating(shop.rating.toString());
+    setReview(shop.review);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div>
-      <h1 className="title">Add a New Coffee Shop</h1>
+      <h1 className="title">Add or Update a Coffee Shop</h1>
       <form onSubmit={handleSubmit}>
         <div className="field">
           <label className="label">Name</label>
@@ -123,7 +123,7 @@ const Dashboard = () => {
         <div className="field">
           <div className="control">
             <button className="button is-link" type="submit">
-              {editingId ? 'Update Coffee Shop' : 'Add Coffee Shop'}
+              {editingShopId ? 'Update Coffee Shop' : 'Add Coffee Shop'}
             </button>
           </div>
         </div>
@@ -138,12 +138,10 @@ const Dashboard = () => {
                 <p className="subtitle is-6">Location: {shop.location}</p>
                 <p><strong>Rating:</strong> {shop.rating}</p>
                 <p><strong>Review:</strong> {shop.review}</p>
-                {shop.user && Auth.loggedIn() && Auth.getProfile().data._id === shop.user._id && (
-                  <>
-                    <button className="button is-info is-small" onClick={() => handleEdit(shop)}>Edit</button>
-                    <button className="button is-danger is-small" onClick={() => handleDelete(shop._id)}>Delete</button>
-                  </>
-                )}
+                <div className="buttons">
+                  <button className="button is-warning" onClick={() => handleEdit(shop)}>Edit</button>
+                  <button className="button is-danger" onClick={() => handleDelete(shop._id)}>Delete</button>
+                </div>
               </div>
             </div>
           </div>
