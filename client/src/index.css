@@ -1,92 +1,64 @@
-:root {
+/* Adjustments for dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #f9f9f9; /* Adjust text color */
+    background-color: #18140e; /* Adjust background color */
+  }
+  a:hover {
+    color: #f9f9f9; /* Adjust link hover color */
+  }
+  button {
+    background-color: #f9f9f9; /* Adjust button background color */
+  }
+}
+
+/* General styles */
+#root {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color-scheme: dark;
+  color: rgba(25, 26, 41, 0.87);
   background-color: #242424;
 
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+/* Font style */
+.sofia-sans-extra-condensed-sofia {
+  font-family: "Sofia Sans Extra Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Logo styles */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* Card styles */
+.card {
+  padding: 2em;
 }
 
-.textarea.is-small {
-  max-height: 100px; /* Limit initial height */
-  overflow: hidden; /* Hide scrollbars */
-  transition: max-height 0.2s ease-out; /* Smooth transition */
-}
-
-.textarea.is-small:focus {
-  max-height: 300px; /* Expand on focus */
-  overflow: auto; /* Show scrollbars when expanded */
-}
-
-.navbar {
-  padding: 0.5rem 1rem;
-}
-
-.navbar-item {
-  padding: 0.5rem 1rem;
-}
-
-.button {
-  margin: 0 0.5rem;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Additional styles */
+.read-the-docs {
+  color: #888;
 }

@@ -3,39 +3,41 @@ import styled from 'styled-components';
 import logo from '../assets/logo.JPEG';
 import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
+import '../App.css';
 
 const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
+  background-color: white;
   padding: 1rem;
   color: white;
+  border-radius: 30px;
 `;
 
 const LogoContainer = styled.div`
-  display: flex;
+  display: flex-left;
   align-items: center;
+  border-radius: 10px;
 `;
 
 const Tagline = styled.div`
   font-size: 24px;
   text-align: center;
-  background-color: #d2b48c;
-  padding: 10px;
-  color: #8b4513;
-  font-weight: bold;
-  border-radius: 8px;
-  font-family: 'Courier New', Courier, monospace;
-  white-space: pre;
-  margin: 0 20px;
+  background-color: #382023;
+  padding: 5px;
+  color: #d2b48c;
+  border-radius: 20px;
+   white-space: pre;
+  margin: 0px;
 `;
 
 const LogoImage = styled.img`
-  width: 350px;
+  // width: 50%;
+  display: flex-left;
   height: auto;
   padding: 0;
-  border-radius: 8px;
+  border-radius: 50px;
 `;
 
 const Button = styled.button`
@@ -59,9 +61,12 @@ const ButtonGroup = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  width: calc(50% - 10px);
-  display: flex;
+  width: calc(40%);
+  Margin: 10px 50px;
+  // display: flex;
+  // flex-wrap: wrap;
   justify-content: center;
+
 `;
 
 const Modal = styled.div`
@@ -110,9 +115,9 @@ const Logo = () => {
     <>
       <Navbar>
         <LogoContainer>
-          <LogoImage src={logo} alt="Logo" />
+        <LogoImage src={logo} className='sophia' alt="Logo" />
           <Tagline>
-            The place to spill the tea...{"\n"}on coffee!
+            The place to spill the tea...{"\n"}or coffee!
           </Tagline>
         </LogoContainer>
         <ButtonGroup>

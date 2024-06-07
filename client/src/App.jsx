@@ -4,13 +4,13 @@ import { Routes, Route } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import 'bulma/css/bulma.min.css';
-import './index.css';
 import Logo from './components/Logo';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import './App.css';
+import './index.css';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:3001/graphql',
