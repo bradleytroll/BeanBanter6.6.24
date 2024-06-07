@@ -1,10 +1,57 @@
+/* Adjustments for dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #f9f9f9; /* Adjust text color */
+    background-color: #18140e; /* Adjust background color */
+  }
+  a:hover {
+    color: #f9f9f9; /* Adjust link hover color */
+  }
+  button {
+    background-color: #f9f9f9; /* Adjust button background color */
+  }
+
+}
+
+@media screen and (max-width: 1279px) {
+  .my-element {
+    background: green;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .my-element {
+    background: orange;
+  }
+}
+
+
+/* General styles */
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: rgba(25, 26, 41, 0.87);
+  background-color: #242424;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
+/* Font style */
+.sofia {
+  font-family: "Sofia Sans Extra Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+
+/* Logo styles */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -18,27 +65,12 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
+/* Card styles */
 .card {
   padding: 2em;
 }
 
+/* Additional styles */
 .read-the-docs {
   color: #888;
 }
-
-
