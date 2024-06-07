@@ -19,7 +19,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
-    "styled-components": "^6.1.11"
+    "styled-components": "^6.1.11",
+    "vite": "^2.0.0"  // Ensure vite is listed here
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
@@ -28,11 +29,6 @@
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "vite": "^2.0.0"
-  },
-  "engines": {
-    "node": "20.x",
-    "npm": ">=6.0.0"
+    "eslint-plugin-react-refresh": "^0.4.3"
   }
 }
