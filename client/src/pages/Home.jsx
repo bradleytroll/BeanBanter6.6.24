@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import Auth from '../utils/auth';
 import { ADD_COMMENT, UPDATE_COMMENT, DELETE_COMMENT } from '../utils/mutations';
-import styled from 'styled-components';
+import Maps from '../components/Maps';
+import "../../src/index.css";
 
 const GET_COFFEESHOPS = gql`
   query GetCoffeeShops {
@@ -83,18 +84,21 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1 className="title has-text-centered sophia">Recent Reviews</h1>
+      <h1 className="home">Recent Reviews</h1>
+      
       <div className="columns is-multiline">
         {data.coffeeShops.map((shop) => (
           <div className="column is-one-third" key={shop._id}>
+            
             <div className="card">
               <div className="card-content">
-                <p className="title is-4">{shop.name}</p>
+                <p className="cardTitle">{shop.name}</p>
                 <p className="subtitle is-6">Location: {shop.location}</p>
                 <div className="content">
                   <p><strong>Rating:</strong> {shop.rating}</p>
                   <p><strong>Review:</strong> {shop.review}</p>
                 </div>
+                
                 <div>
                   {shop.comments.map((comment) => (
                     <div key={comment._id} className="box">
@@ -149,6 +153,7 @@ const HomePage = () => {
           </div>
         ))}
       </div>
+      <Maps/>
     </div>
   );
 };
