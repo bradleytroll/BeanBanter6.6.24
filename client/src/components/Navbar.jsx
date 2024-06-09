@@ -3,17 +3,9 @@ import styled from 'styled-components';
 import logo from '../assets/logo.JPEG';
 import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
-import '../App.css';
+import "../../src/index.css"
 
-const Navbar = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: white;
-  padding: 1rem;
-  color: white;
-  border-radius: 30px;
-`;
+
 
 const LogoContainer = styled.div`
   display: flex-left;
@@ -60,7 +52,7 @@ const ButtonGroup = styled.div`
   gap: 10px;
 `;
 
-const ButtonContainer = styled.div`
+const div = styled.div`
   width: calc(40%);
   Margin: 10px 50px;
   // display: flex;
@@ -71,15 +63,15 @@ const ButtonContainer = styled.div`
 
 const Modal = styled.div`
   display: ${({ $show }) => ($show ? 'block' : 'none')};
-  position: fixed;
+  position: sticky;
   z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+  height: 20%;
+  // overflow: auto;
+  background-color: #03212e;
+  background-color: #03212e;
 `;
 
 const ModalContent = styled.div`
@@ -104,7 +96,7 @@ const CloseButton = styled.span`
   }
 `;
 
-const Logo = () => {
+const Navbar = () => {
   const [showModal, setShowModal] = useState(false);
 
   const toggleModal = () => {
@@ -113,53 +105,55 @@ const Logo = () => {
 
   return (
     <>
-      <Navbar>
-        <LogoContainer>
-        <LogoImage src={logo} className='sophia' alt="Logo" />
-          <Tagline>
-            The place to spill the tea...{"\n"}or coffee!
-          </Tagline>
-        </LogoContainer>
-        <ButtonGroup>
-          <ButtonContainer>
-            <Button as={Link} to="/">Home</Button>
-          </ButtonContainer>
+      <nav className="navbar">
+        <div className="logoContainer">
+        <img src={logo} className='logoImage' alt="Logo" href="./assets/logo.jpeg"></img> 
+        </div>
+        <div className="menuButtonGroup">
+          <div>
+            <button as={Link} to="/" className="menuButton">Home</button>
+          </div>
           {Auth.loggedIn() ? (
             <>
-              <ButtonContainer>
-                <Button as={Link} to="/dashboard">Dashboard</Button>
-              </ButtonContainer>
-              <ButtonContainer>
-                <Button as="a" href="/" onClick={() => Auth.logout()}>Logout</Button>
-              </ButtonContainer>
+              <div>
+                <button as={Link} to="/dashboard" className="menuButton" >Dashboard</button>
+              </div>
+              <div>
+                <button as="a" href="/" onClick={() => Auth.logout()} className="menuButton">Logout</button>
+              </div>
             </>
           ) : (
             <>
-              <ButtonContainer>
-                <Button as={Link} to="/signup">Signup</Button>
-              </ButtonContainer>
-              <ButtonContainer>
-                <Button as={Link} to="/login">Login</Button>
-              </ButtonContainer>
+              <div>
+                <button as={Link} to="/signup" className="menuButton">Signup</button>
+              </div>
+              <div>
+                <button as={Link} to="/login" className="menuButton">Login</button>
+              </div>
             </>
           )}
-          <ButtonContainer>
-            <Button onClick={toggleModal}>About</Button>
-          </ButtonContainer>
-        </ButtonGroup>
-      </Navbar>
-      <Modal $show={showModal}>
-        <ModalContent>
-          <CloseButton onClick={toggleModal}>&times;</CloseButton>
+          <div>
+            <Button onClick={toggleModal} className="menuButton">About</Button>
+          </div>
+        </div>
+      </nav>
+      
+      <div className="tagline">
+            The place to spill the tea...{"\n"}or coffee!
+          </div>
+
+      <Modal $show={showModal} className="modal">
+        <div className="modalcontent">
+          <div onClick={toggleModal} className="modalCloseButton">&times;</div>
           <h2>About BeanBanter</h2>
           <p>
             Welcome to BeanBanter, your go-to app for tracking and rating coffee shops. 
             Join us to discover new favorites and share your experiences with the community.
           </p>
-        </ModalContent>
+        </div>
       </Modal>
     </>
   );
 };
 
-export default Logo;
+export default Navbar;

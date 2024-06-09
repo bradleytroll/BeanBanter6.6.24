@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import 'bulma/css/bulma.min.css';
-import Logo from './components/Logo';
+import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -35,7 +35,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Logo />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
