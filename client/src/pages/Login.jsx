@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import Auth from '../utils/auth';
+import "../../src/index.css";
 
 const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
@@ -44,7 +45,7 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <button type="submit" disabled={loading}>
+      <button className='submitButton' type="submit" disabled={loading}>
         {loading ? 'Logging in...' : 'Login'}
       </button>
       {error && <p>Error: {error.message}</p>}

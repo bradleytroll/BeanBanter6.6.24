@@ -1,4 +1,5 @@
 /* Adjustments for dark mode */
+@import 'bulma/css/bulma.css';
 @media (prefers-color-scheme: dark) {
   :root {
     color: #f9f9f9; /* Adjust text color */

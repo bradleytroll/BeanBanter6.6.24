@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { ADD_COFFEE_SHOP, DELETE_COFFEE_SHOP, UPDATE_COFFEE_SHOP } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
+import "../../src/index.css";
+
 
 const Dashboard = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_ME);

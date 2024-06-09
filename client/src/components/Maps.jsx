@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
 import SearchBar from './SearchBar'; // Assuming SearchBar.jsx is in the same directory
+import "../../src/index.css"
 
 const containerStyle = {
   width: '100%',
-  height: '400px'
+  height: '400px',
+  borderRadius: '10px' 
 };
 
 const libraries = ['places']; 
