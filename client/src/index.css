@@ -1,4 +1,6 @@
 /* Adjustments for dark mode */
+@import 'bulma/css/bulma.css';
+
 @media (prefers-color-scheme: dark) {
   :root {
     color: #f9f9f9; /* Adjust text color */
@@ -9,6 +11,12 @@
   }
   button {
     background-color: #f9f9f9; /* Adjust button background color */
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .my-element {
+    background: blue;
   }
 }
 
@@ -61,4 +69,82 @@
 /* Additional styles */
 .read-the-docs {
   color: #888;
+}
+/* moved the hardcoded styling from logo.jsx */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background-color: #242424;
+  border-bottom: 1px solid #333;
+  }
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1em;
+  }
+
+.logoImage {
+  width: 100%;
+  display: flex;
+  /* position:relative; */
+  height:auto;
+  padding: 0;
+  border-radius: 50px;
+}
+.tagline {
+  font-size: 24px;
+  width: 70%;
+  text-align: center;
+  text-wrap: pretty;
+  background-color: #382023;
+  padding: 2%;
+  border-radius: 40px;
+  white-space: pre;
+  margin:auto;
+  color: #d5bda2; 
+  }
+
+.menuButton {
+  background-color: #d2b48c;
+  color: #301807;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.menuButtonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modalcontent {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+}
+
+.modalCloseButton {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  &:hover,
+  &:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 }
