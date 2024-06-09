@@ -148,3 +148,33 @@
     cursor: pointer;
 }
 }
+
+.map {
+  display: grid;
+  float:right;
+  justify-content: center;
+  align-items: right;
+}
+
+.searchBar {
+  justify-content: center;
+}
+
+.card {
+  display: grid;
+}
+.cardTitle {
+  display: block;
+  position: relative;
+  justify-content: center;
+  font-size: large;
+  font-weight: bold;
+  padding: 0px;
+  margin-bottom: 20px;
+
+}
+
+.card-content {
+  padding: 2em;
+  justify-content: space-between;
+}
