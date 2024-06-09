@@ -1,38 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
 import SearchBar from './SearchBar'; // Assuming SearchBar.jsx is in the same directory
+
 const containerStyle = {
-  width: '70%',
+  width: '100%',
   height: '400px'
 };
-const center = {
-  lat: -3.745,
-  lng: -38.523
-};
-const libraries = ['places'];
+
+const libraries = ['places']; 
+
 const Maps = () => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyDLxAFQEwVWNrZWmxtAQt61YuM5jXVMwAk', // Replace 'YOUR_API_KEY' with your actual API key
-    libraries,
+    libraries: libraries,
   });
+
   const [selectedShop, setSelectedShop] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const [center, setCenter] = useState({ lat: -3.745, lng: -38.523 });
+
   const handleSearch = (query) => {
     if (!window.google) {
       console.error('Google Maps JavaScript API not loaded.');
       return;
     }
+
     const service = new window.google.maps.places.PlacesService(document.createElement('div'));
     service.textSearch({
-      query: query,
-      location: center,
-      radius: 10000, // Search radius in meters, adjust as needed
+      query: `coffee shops in ${query}`, // Include 'coffee shops in' to specify the type of places being searched
     }, (results, status) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        const coffeeShops = results.filter(result => result.types.includes('cafe'));
-        console.log('Found coffee shops:', coffeeShops);
-        setSearchResults(coffeeShops);
+        setSearchResults(results);
+        console.log('Found coffee shops:', results);
+        if (results.length > 0) {
+          setCenter(results[0].geometry.location); // Set center to the location of the first result
+        }
       } else {
         console.error('Search failed:', status);
       }
@@ -41,27 +44,27 @@ const Maps = () => {
 
   return isLoaded ? (
     <div>
-      <SearchBar className="searchBar" onSearch={handleSearch} />
-      <GoogleMap className="map"
+      <SearchBar onSearch={handleSearch} />
+      <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
         zoom={10}
       >
-        {searchResults && searchResults.map((result, index) => (
+        {searchResults.map((result, index) => (
           <Marker
-            key={`result-${index}`}
+            key={`result-${index}`} // Use a unique key for each marker
             position={result.geometry.location}
             onClick={() => setSelectedShop(result)}
           />
         ))}
         {selectedShop && (
           <InfoWindow
-            position={selectedShop.geometry.location}
+            position={{ lat: selectedShop.geometry.location.lat(), lng: selectedShop.geometry.location.lng() }}
             onCloseClick={() => setSelectedShop(null)}
           >
             <div>
               <h3>{selectedShop.name}</h3>
-              <p>{selectedShop.formatted_address}</p>
+              <p>{selectedShop.vicinity}</p>
             </div>
           </InfoWindow>
         )}
@@ -72,7 +75,7 @@ const Maps = () => {
           {searchResults.map((shop, index) => (
             <li key={`shop-${index}`}>
               <h3>{shop.name}</h3>
-              <p>{shop.formatted_address}</p>
+              <p>{shop.vicinity}</p>
             </li>
           ))}
         </ul>
@@ -80,4 +83,5 @@ const Maps = () => {
     </div>
   ) : <></>;
 };
+
 export default Maps;

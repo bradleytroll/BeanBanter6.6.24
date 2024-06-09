@@ -7,30 +7,6 @@ import "../../src/index.css"
 
 
 
-const LogoContainer = styled.div`
-  display: flex-left;
-  align-items: center;
-  border-radius: 10px;
-`;
-
-const Tagline = styled.div`
-  font-size: 24px;
-  text-align: center;
-  background-color: #382023;
-  padding: 5px;
-  color: #d2b48c;
-  border-radius: 20px;
-   white-space: pre;
-  margin: 0px;
-`;
-
-const LogoImage = styled.img`
-  // width: 50%;
-  display: flex-left;
-  height: auto;
-  padding: 0;
-  border-radius: 50px;
-`;
 
 const Button = styled.button`
   background-color: #d2b48c;
@@ -45,21 +21,7 @@ const Button = styled.button`
   box-sizing: border-box;
 `;
 
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-`;
 
-const div = styled.div`
-  width: calc(40%);
-  Margin: 10px 50px;
-  // display: flex;
-  // flex-wrap: wrap;
-  justify-content: center;
-
-`;
 
 const Modal = styled.div`
   display: ${({ $show }) => ($show ? 'block' : 'none')};
@@ -110,26 +72,16 @@ const Navbar = () => {
         <img src={logo} className='logoImage' alt="Logo" href="./assets/logo.jpeg"></img> 
         </div>
         <div className="menuButtonGroup">
-          <div>
-            <button as={Link} to="/" className="menuButton">Home</button>
-          </div>
-          {Auth.loggedIn() ? (
+            <Button as={Link} to="/" className="menuButton">Home</Button>
+            {Auth.loggedIn() ? (
             <>
-              <div>
-                <button as={Link} to="/dashboard" className="menuButton" >Dashboard</button>
-              </div>
-              <div>
-                <button as="a" href="/" onClick={() => Auth.logout()} className="menuButton">Logout</button>
-              </div>
+                <Button as={Link} to="/dashboard" className="menuButton" >Dashboard</Button>
+                <Button as="a" to="/" onClick={() => Auth.logout()} className="menuButton">Logout</Button>
             </>
           ) : (
             <>
-              <div>
-                <button as={Link} to="/signup" className="menuButton">Signup</button>
-              </div>
-              <div>
-                <button as={Link} to="/login" className="menuButton">Login</button>
-              </div>
+                <Button as={Link} to="/signup" className="menuButton">Signup</Button>
+                <Button as={Link} to="/login" className="menuButton">Login</Button>
             </>
           )}
           <div>
