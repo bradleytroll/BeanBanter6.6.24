@@ -1,7 +1,7 @@
 /* Adjustments for dark mode */
 @import 'bulma/css/bulma.css';
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark){
   :root {
     color: #f9f9f9; /* Adjust text color */
     background-color: #18140e; /* Adjust background color */
@@ -79,18 +79,19 @@
   background-color: #242424;
   border-bottom: 1px solid #333;
   }
-.logoContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1em;
-  max-width: 80%;
+  .logoContainer {
+    margin-right: 1rem; /* Add margin if needed */
+  }
+  
+  @media (max-width: 768px) {
+    .logoContainer {
+      margin-right: 0; /* Remove margin on smaller screens */
+    }
   }
 
 .logoImage {
-  display: reltive;
+  display: flex;
   position:relative;
-  height:auto;
   padding: 0;
   border-radius: 50px;
 }
@@ -107,24 +108,18 @@
   color: #d5bda2; 
   }
 
-.menuButton {
-  background-color: #d2b48c;
-  color: #301807;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  margin: 5px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
 .menuButtonGroup {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
   justify-content: center;
   gap: 10px;
+}
+  @media (max-width: 576px) {
+  .menuButtonGroup {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+    align-items: center; /* Center buttons horizontally */
+  }
 }
 
 .modalcontent {
@@ -150,18 +145,24 @@
 }
 
 .map {
-  display: grid;
-  float:right;
+display: flex;
+justify-content: center;
   justify-content: center;
   align-items: right;
+
 }
 
 .searchBar {
+  display: flex;
   justify-content: center;
+  border-radius: 5px;
+  background-size: 10%;
+  font-size: medium;
 }
 
 .card {
   display: flexbox;
+
 }
 .cardTitle {
   display: block;
@@ -175,6 +176,19 @@
 }
 
 .card-content {
-  padding: 2em;
+  padding: 0;
   justify-content: space-between;
+}
+
+.searchButton{
+  background-color: #30a4a6  ;
+  width: 150px;
+  border-radius: 5px;
+}
+
+.submitButton{
+  background-color: #30a4a6  ;
+  width: 150px;
+  border-radius: 5px;
+  box-shadow: #30a4a6;
 }

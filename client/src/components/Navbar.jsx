@@ -6,19 +6,18 @@ import Auth from '../utils/auth';
 import "../../src/index.css"
 
 
-
-
 const Button = styled.button`
-  background-color: #d2b48c;
-  color: #8b4513;
-  padding: 10px 20px;
-  border: none;
+  background-color: #d0c2b7;
+  color: #301807;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  margin: 5px;
-  width: 100%;
-  box-sizing: border-box;
+  @media (min-width: 768px) {
+    /* Adjust button sizes for larger screens */
+    .menuButton {
+      width: auto; /* Allow buttons to adjust their width based on content */
+      padding: 8px 16px; /* Adjust padding */
+    }
 `;
 
 
@@ -66,40 +65,39 @@ const Navbar = () => {
   };
 
   return (
-    <>
-      <nav className="navbar">
-        <div className="logoContainer">
-        <img src={logo} className='logoImage' alt="Logo" href="./assets/logo.jpeg"></img> 
-        </div>
+    <><nav className="navbar is-mobile">
+      <div className="logoContainer">
+        <img src={logo} className='logoImage' alt="Logo" href="./assets/logo.jpeg"></img>
+      </div>
         <div className="menuButtonGroup">
-            <Button as={Link} to="/" className="menuButton">Home</Button>
-            {Auth.loggedIn() ? (
+          <Button as={Link} to="/" className="menuButton is-fullwidth">Home</Button>
+          {Auth.loggedIn() ? (
             <>
-                <Button as={Link} to="/dashboard" className="menuButton" >Dashboard</Button>
-                <Button as="a" to="/" onClick={() => Auth.logout()} className="menuButton">Logout</Button>
+              <Button as={Link} to="/dashboard" className="menuButton is-fullwidth" >Dashboard</Button>
+              <Button as="a" to="/" onClick={() => Auth.logout()} className="menuButton is-fullwidth">Logout</Button>
             </>
           ) : (
             <>
-                <Button as={Link} to="/signup" className="menuButton">Signup</Button>
-                <Button as={Link} to="/login" className="menuButton">Login</Button>
+              <Button as={Link} to="/signup" className="menuButton is-fullwidth">Signup</Button>
+              <Button as={Link} to="/login" className="menuButton is-fullwidth">Login</Button>
             </>
           )}
           <div>
-            <Button onClick={toggleModal} className="menuButton">About</Button>
+            <Button onClick={toggleModal} className="menuButton is-fullwidth">About</Button>
           </div>
         </div>
       </nav>
-      
-      <div className="tagline">
-            The place to spill the tea...{"\n"}or coffee!
-          </div>
+
+      <div className="tagline has-text-centered">
+        The place to spill the tea...{"\n"}or coffee!
+      </div>
 
       <Modal $show={showModal} className="modal">
         <div className="modalcontent">
           <div onClick={toggleModal} className="modalCloseButton">&times;</div>
           <h2>About BeanBanter</h2>
           <p>
-            Welcome to BeanBanter, your go-to app for tracking and rating coffee shops. 
+            Welcome to BeanBanter, your go-to app for tracking and rating coffee shops.
             Join us to discover new favorites and share your experiences with the community.
           </p>
         </div>

@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-
+import './index.css';
 import 'bulma/css/bulma.min.css'; // Import Bulma CSS
 
 import App from './App.jsx';

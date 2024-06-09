@@ -27,7 +27,7 @@ const CommentForm = ({ onSubmit, initialData }) => {
         value={text}
         onChange={handleChange}
       ></textarea>
-      <button type="submit">Submit</button>
+      <button className="submitButton" type="submit">Submit</button>
     </form>
   );
 };
