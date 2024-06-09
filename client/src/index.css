@@ -84,12 +84,12 @@
   align-items: center;
   justify-content: center;
   margin-right: 1em;
+  max-width: 80%;
   }
 
 .logoImage {
-  width: 100%;
-  display: flex;
-  /* position:relative; */
+  display: reltive;
+  position:relative;
   height:auto;
   padding: 0;
   border-radius: 50px;
@@ -161,7 +161,7 @@
 }
 
 .card {
-  display: grid;
+  display: flexbox;
 }
 .cardTitle {
   display: block;
